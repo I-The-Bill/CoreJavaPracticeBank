@@ -8,6 +8,5 @@ public class DollarsBankController
 	{
 		ConsolePrinterUtility p = new ConsolePrinterUtility();
 		
-		p.println("Hello");
 	}
 }
