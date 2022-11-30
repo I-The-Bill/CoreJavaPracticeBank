@@ -1,6 +1,7 @@
 package com.dollarsBank.application;
 import java.util.Scanner;
 import com.dollarsBank.controller.DollarsBankController;
+import com.dollarsBank.exceptions.TransactionNotPossibleException;
 import com.dollarsBank.model.Customer;
 import com.dollarsBank.util.ConsolePrinterUtility;
 
@@ -73,7 +74,7 @@ public class DollarsBankDriver
 										      +"\n2. Open a New Savings Account"
 									      	  +"\n3. Deposit"
 									      	  +"\n4. Withdraw"
-									      	  +"\n5. Funds Transfer"
+									      	  +"\n5. View Balance"
 									      	  +"\n6. Display your information"
 									      	  +"\n7. Display most Recent Transactions"
 										      +"\n0. Sign out"
@@ -96,7 +97,7 @@ public class DollarsBankDriver
 											toRun.withdrawMoney(in);
 											break;
 										case 5:
-											toRun.transferMoney(in);
+											toRun.getMoneyinAccount(in);
 											break;
 										case 6:
 											toRun.getCxInfo(in);
@@ -104,6 +105,9 @@ public class DollarsBankDriver
 										case 7:
 											toRun.getLastTransactions(in);
 											break;	
+										case 8:
+											toRun.transferMoney(in);
+											break;
 										case 0:
 											p.printlnYellow(p.inABox("Returning to main menu"));
 											loggedIn = false;
@@ -113,11 +117,20 @@ public class DollarsBankDriver
 									}	
 									
 							}
+							catch(TransactionNotPossibleException e)
+							{
+								p.error(e.getMessage());
+							}	
 							catch(Exception e)
 							{
 								e.printStackTrace();
 							}
 						}
+							else
+							{
+								p.println("Login failed");
+								loggedIn = false;
+							}
 					}		
 						break;
 					case 0:

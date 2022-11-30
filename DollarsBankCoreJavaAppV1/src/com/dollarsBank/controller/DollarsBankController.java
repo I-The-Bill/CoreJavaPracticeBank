@@ -1,9 +1,8 @@
 package com.dollarsBank.controller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Scanner;
 
-import com.dollarsBank.exceptions.InvalidCredentialsException;
 import com.dollarsBank.exceptions.TransactionNotPossibleException;
 import com.dollarsBank.exceptions.UserNotFoundException;
 import com.dollarsBank.model.CheckingAccount;
@@ -57,11 +56,19 @@ public class DollarsBankController
 		catch (UserNotFoundException e)
 		{
 			p.error(e.getMessage());
+			return null;
 		}
 		catch (IndexOutOfBoundsException e)
 		{
-			p.error("No Users Found");
+			p.error("No Users Found, Outside Scope");
+			return null;
 		}
+		catch (NumberFormatException e)
+		{
+			p.error("No Users Found, Invalid Input");
+			return null;
+		}
+		
 		catch (Exception e)
 		{
 			e.printStackTrace();
@@ -80,7 +87,8 @@ public class DollarsBankController
 		}
 		CheckingAccount newCa = new CheckingAccount(daBank.getCaList().size(),in.getUserAccountNumber(),depo);
 		daBank.addCaList(newCa);
-		daBank.getCx(in.getUserAccountNumber()).setTransactons("Inital deposit of $" + depo + " in checking account " + newCa.getId());
+		Date done = new Date();
+		daBank.getCx(in.getUserAccountNumber()).setTransactons("Inital deposit of $" + depo + " in checking account " + newCa.getId() + " at " + done );
 	}
 
 	public void createSavingsAccount(Customer in) throws TransactionNotPossibleException 
@@ -93,11 +101,12 @@ public class DollarsBankController
 		}
 		SavingsAccount newSa = new SavingsAccount(daBank.getSaList().size(),in.getUserAccountNumber(),depo);
 		daBank.addSaList(newSa);
-		daBank.getCx(in.getUserAccountNumber()).setTransactons("Inital deposit of $" + depo + " in savings account " + newSa.getId());
+		Date done = new Date();
+		daBank.getCx(in.getUserAccountNumber()).setTransactons("Inital deposit of $" + depo + " in savings account " + newSa.getId() + " at " + done);
 		
 	}
 
-	public void depositMoney(Customer in)
+	public void depositMoney(Customer in) throws TransactionNotPossibleException
 	{
 		p.println("Savings account or Checking account?"
 				+ "\n1. Checkings "
@@ -110,16 +119,26 @@ public class DollarsBankController
 				int caId = input.nextInt();//Integer.parseInt(input.nextLine());
 				p.println("Enter Amount to deposit");
 				double ammountToAdd = input.nextDouble();
+				if (ammountToAdd < 0)
+				{
+					throw new TransactionNotPossibleException("Can't deposit a negative value");
+				}
 				daBank.getCaList(caId).setAmount(ammountToAdd+daBank.getCaList(caId).getAmount());
-				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + ammountToAdd + " in checking account " + caId);
+				Date done = new Date();
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + ammountToAdd + " in checking account " + caId + " on " + done);
 				break;
 			case 2:
 				p.println("Enter Account id");
 				int saId = input.nextInt();//Integer.parseInt(input.nextLine());
 				p.println("Enter Amount to deposit");
 				double amountToAdd = input.nextInt();//input.nextDouble();
+				if (amountToAdd < 0)
+				{
+					throw new TransactionNotPossibleException("Can't deposit a negative value");
+				}
 				daBank.getCaList(saId).setAmount(amountToAdd+daBank.getCaList(saId).getAmount());
-				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + amountToAdd + " in savings account " + saId);
+				Date done2 = new Date();
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + amountToAdd + " in savings account " + saId + " on " + done2);
 				break;
 			default:
 				break;
@@ -127,12 +146,12 @@ public class DollarsBankController
 		
 	}
 
-	public void withdrawMoney(Customer in) 
+	public void withdrawMoney(Customer in) throws TransactionNotPossibleException 
 	{
 		p.println("Savings account or Checking account?"
-				+ "\n1. Savings"
-				+ "\n2. Checkings");
-		int choice = Integer.parseInt(input.nextLine());
+				+ "\n1. Checkings "
+				+ "\n2. Savings");
+		int choice = input.nextInt();//Integer.parseInt(input.nextLine());
 		switch(choice)
 		{
 			case 1:
@@ -140,16 +159,26 @@ public class DollarsBankController
 				int caId = input.nextInt();//Integer.parseInt(input.nextLine());
 				p.println("Enter Amount to deposit");
 				double ammountToWithdraw = input.nextDouble();
+				if (ammountToWithdraw > daBank.getCaList(caId).getAmount())
+				{
+					throw new TransactionNotPossibleException("Can't withdraw more then you have");
+				}
 				daBank.getCaList(caId).setAmount(daBank.getCaList(caId).getAmount()-ammountToWithdraw);
-				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew $" + ammountToWithdraw + " from checking account " + caId);
+				Date done = new Date();
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew $" + ammountToWithdraw + " from checking account " + caId + " on " + done);
 				break;
 			case 2:
 				p.println("Enter Account id");
 				int saId = input.nextInt();//Integer.parseInt(input.nextLine());
 				p.println("Enter Amount to deposit");
 				double amountToWithdraw = input.nextDouble();
+				if (amountToWithdraw > daBank.getCaList(saId).getAmount())
+				{
+					throw new TransactionNotPossibleException("Can't withdraw more then you have");
+				}
 				daBank.getCaList(saId).setAmount(daBank.getCaList(saId).getAmount()-amountToWithdraw);
-				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew of $" + amountToWithdraw + " from savings account " + saId);
+				Date done2 = new Date();
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew of $" + amountToWithdraw + " from savings account " + saId + " on " + done2);
 				break;
 			default:
 				break;
@@ -157,9 +186,31 @@ public class DollarsBankController
 		
 	}
 
+	public void getMoneyinAccount(Customer in) 
+	{	
+		p.println("Savings account or Checking account?"
+				+ "\n1. Checkings "
+				+ "\n2. Savings");
+		int choice = input.nextInt();//Integer.parseInt(input.nextLine());
+		switch(choice)
+		{
+			case 1:
+				p.println("Enter Account id");
+				int caId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.printlnYellow("Current Balance: " + daBank.getCaList(caId).getAmount());
+				break;
+			case 2:
+				p.println("Enter Account id");
+				int saId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.printlnYellow("Current Balance: " + daBank.getCaList(saId).getAmount());
+				break;
+			default:
+				break;
+		}
+	}
+	
 	public void transferMoney(Customer in) 
-	{
-		
+	{	
 		
 	}
 
