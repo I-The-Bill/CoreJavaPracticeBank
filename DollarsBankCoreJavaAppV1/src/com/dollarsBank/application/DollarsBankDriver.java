@@ -113,9 +113,9 @@ public class DollarsBankDriver
 									}	
 									
 							}
-							catch(Exception E)
+							catch(Exception e)
 							{
-									
+								e.printStackTrace();
 							}
 						}
 					}		

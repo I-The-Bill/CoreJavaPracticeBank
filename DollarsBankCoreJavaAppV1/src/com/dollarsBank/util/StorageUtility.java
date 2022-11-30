@@ -33,7 +33,10 @@ public class StorageUtility
 	{
 		CaList.add(caList);
 	}
-	
+	public CheckingAccount getCaList(int id)
+	{
+		return CaList.get(id);
+	}
 	public ArrayList<SavingsAccount> getSaList() 
 	{
 		return SaList;
@@ -42,6 +45,9 @@ public class StorageUtility
 	{
 		SaList.add(saList);
 	}
-
+	public SavingsAccount saList(int id)
+	{
+		return SaList.get(id);
+	}
 	
 }

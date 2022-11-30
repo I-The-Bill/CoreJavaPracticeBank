@@ -100,15 +100,60 @@ public class DollarsBankController
 	public void depositMoney(Customer in)
 	{
 		p.println("Savings account or Checking account?"
-				+ "\n1. Savings"
-				+ "\n2. Checkings");
-		
+				+ "\n1. Checkings "
+				+ "\n2. Savings");
+		int choice = input.nextInt();//Integer.parseInt(input.nextLine());
+		switch(choice)
+		{
+			case 1:
+				p.println("Enter Account id");
+				int caId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.println("Enter Amount to deposit");
+				double ammountToAdd = input.nextDouble();
+				daBank.getCaList(caId).setAmount(ammountToAdd+daBank.getCaList(caId).getAmount());
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + ammountToAdd + " in checking account " + caId);
+				break;
+			case 2:
+				p.println("Enter Account id");
+				int saId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.println("Enter Amount to deposit");
+				double amountToAdd = input.nextInt();//input.nextDouble();
+				daBank.getCaList(saId).setAmount(amountToAdd+daBank.getCaList(saId).getAmount());
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Deposited of $" + amountToAdd + " in savings account " + saId);
+				break;
+			default:
+				break;
+		}
 		
 	}
 
 	public void withdrawMoney(Customer in) 
 	{
-		// TODO Auto-generated method stub
+		p.println("Savings account or Checking account?"
+				+ "\n1. Savings"
+				+ "\n2. Checkings");
+		int choice = Integer.parseInt(input.nextLine());
+		switch(choice)
+		{
+			case 1:
+				p.println("Enter Account id");
+				int caId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.println("Enter Amount to deposit");
+				double ammountToWithdraw = input.nextDouble();
+				daBank.getCaList(caId).setAmount(daBank.getCaList(caId).getAmount()-ammountToWithdraw);
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew $" + ammountToWithdraw + " from checking account " + caId);
+				break;
+			case 2:
+				p.println("Enter Account id");
+				int saId = input.nextInt();//Integer.parseInt(input.nextLine());
+				p.println("Enter Amount to deposit");
+				double amountToWithdraw = input.nextDouble();
+				daBank.getCaList(saId).setAmount(daBank.getCaList(saId).getAmount()-amountToWithdraw);
+				daBank.getCx(in.getUserAccountNumber()).setTransactons("Withdrew of $" + amountToWithdraw + " from savings account " + saId);
+				break;
+			default:
+				break;
+		}
 		
 	}
 
@@ -132,7 +177,7 @@ public class DollarsBankController
 		p.println(p.inABox("Last 5 Transactions"));
 		for (int i = 0; i < in.getLastTransactons().length;i++)
 		{
-			p.println(i + ". " + in.getLastTransactons()[i]);
+			p.println((i+1) + ". " + in.getLastTransactons()[i]);
 		}
 		
 	}
