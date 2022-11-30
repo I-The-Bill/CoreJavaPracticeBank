@@ -159,7 +159,7 @@ public class DollarsBankController
 
 	public void transferMoney(Customer in) 
 	{
-		// TODO Auto-generated method stub
+		
 		
 	}
 
