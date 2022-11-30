@@ -8,16 +8,21 @@ import com.dollarsBank.model.SavingsAccount;
 
 public class StorageUtility 
 {
-	private ArrayList<Customer> Cx = new ArrayList<>();
+	private ArrayList<Customer> CxList = new ArrayList<>();
 	private ArrayList<CheckingAccount> CaList = new ArrayList<>();
 	private ArrayList<SavingsAccount> SaList = new ArrayList<>();
 
-	public ArrayList<Customer> getCx() {
-		return Cx;
+	public ArrayList<Customer> getCxList() 
+	{
+		return CxList;
 	}
 	public void addCx(Customer cx) 
 	{
-		Cx.add(cx);
+		CxList.add(cx);
+	}
+	public Customer getCx(int UserId) 
+	{
+		return CxList.get(UserId);
 	}
 	
 	public ArrayList<CheckingAccount> getCaList() 

@@ -43,6 +43,26 @@ public class ConsolePrinterUtility {
 	{
 		System.out.println(c.cyan(toPrint));
 	}
+	public String inABox(String toBox)
+	{
+		String boxed = "+";
+		for (int i = 0; i<toBox.length()+2;i++)
+		{
+			boxed+="-";
+		}
+		boxed+="+\n| " + toBox +" |\n+";
+		for (int i = 0; i<toBox.length()+2;i++)
+		{
+			boxed+="-";
+		}
+		boxed+="+";
+		return boxed;
+	}
+	
+	public void error(String error)
+	{
+		printlnRed("\n+--" + error +"--+");
+	}
 
 	
 }

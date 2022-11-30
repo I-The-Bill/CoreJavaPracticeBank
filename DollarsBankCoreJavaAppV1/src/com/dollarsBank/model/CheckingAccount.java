@@ -6,19 +6,31 @@ public class CheckingAccount
 	public int userId;
 	public double amount;
 	
+	public CheckingAccount() 
+	{
+		this.setId(-1);
+		this.setUserId(-1);
+		this.setAmount(-1);
+	}
+	public CheckingAccount(int id, int userId, double amount) 
+	{
+		this.setId(id);
+		this.setUserId(userId);
+		this.setAmount(amount);
+	}
 	public int getId()
 	{
 		return id;
 	}
-	public void setId(int id) {
+	private void setId(int id) 
+	{
 		this.id = id;
-		
 	}
 	public int getUserId() 
 	{
 		return userId;
 	}
-	public void setUserId(int userId) 
+	private void setUserId(int userId) 
 	{
 		this.userId = userId;
 	}

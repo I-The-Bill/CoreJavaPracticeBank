@@ -6,7 +6,14 @@ public class SavingsAccount
 		public int id;
 		public int userId;
 		public double amount;
+
 		
+		public SavingsAccount(int id, int userAccountNumber, Double depo) 
+		{
+			this.setId(id);
+			this.setUserId(userAccountNumber);
+			this.setAmount(depo);
+		}
 		public int getId() {
 			return id;
 		}
@@ -25,19 +32,7 @@ public class SavingsAccount
 		public void setAmount(double amount) {
 			this.amount = amount;
 		}
-		public double getIntrestRate() {
-			return intrestRate;
-		}
-		public void setIntrestRate(double intrestRate) {
-			this.intrestRate = intrestRate;
-		}
-		public double getMaintainceFee() {
-			return maintainceFee;
-		}
-		public void setMaintainceFee(double maintainceFee) {
-			this.maintainceFee = maintainceFee;
-		}
-		public double intrestRate;
-		public double maintainceFee;
+
+
 	
 }
